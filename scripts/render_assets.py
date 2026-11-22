@@ -72,6 +72,27 @@ def screenshot(frames, out):
     img.save(out)
 
 
+def social(frames, out, names=("lava", "ocean", "calm")):
+    """A compact, roughly 16:9 picture for a social post: a few skins with their dashboard."""
+    font = ImageFont.truetype(FONT, 23)
+    small = ImageFont.truetype(FONT, 20)
+    info = ["thinking   |    12s", "ctx  60% |   ~$0.41", "tools 7 | Readx4 Bashx2", "> Bash npm test"]
+    pad = 28
+    block = CH * 5 + CH // 2
+    img = Image.new("RGB", (pad * 2 + CW * 72, pad * 2 + block * len(names)), BG)
+    d = ImageDraw.Draw(img)
+    y = pad
+    for name in names:
+        data = frames[name]
+        d.text((pad, y), name, font=small, fill=DIM)
+        y += CH
+        draw_run_rows(d, font, data["rows"], pad, y)
+        for i, line in enumerate(info):
+            d.text((pad + CW * 48, y + i * CH + 2), line, font=font, fill=DIM if i == 3 else FG)
+        y += CH * 4 + CH // 2
+    img.save(out)
+
+
 def icon(frames, out):
     size, cell, grid = 512, 38, 10
     img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
@@ -96,3 +117,4 @@ if __name__ == "__main__":
     os.makedirs(out, exist_ok=True)
     screenshot(frames, os.path.join(out, "screenshot.png"))
     icon(frames, os.path.join(out, "icon.png"))
+    social(frames, os.path.join(out, "social.png"))
