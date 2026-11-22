@@ -11,6 +11,9 @@ export type Ctx = {
   y: number
   // Animation time in frames.
   t: number
+  // Animation time in seconds, independent of fps. Skins whose speed must
+  // not change with the frame rate (calm) use this instead of `t`.
+  s: number
   width: number
   rows: number
   // Context-window fill, 0 to 1.
@@ -76,7 +79,7 @@ const depth = (level: number, rows: number): number =>
 
 const EIGHTHS = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█']
 
-type Water = { ch: string; below: number }
+type Water = { ch: string; below: number; covered: number }
 
 // One cell of a body of water whose surface sits `top` rows below the grid's
 // top edge. The surface cell is filled to its exact height with an eighth
@@ -87,9 +90,9 @@ const water = (top: number, y: number): Water | null => {
   const covered = y + 1 - top
   if (covered <= 0.06) return null
   if (covered < 1) {
-    return { ch: EIGHTHS[clamp(Math.round(covered * 8), 1, 8) - 1], below: 0 }
+    return { ch: EIGHTHS[clamp(Math.round(covered * 8), 1, 8) - 1], below: 0, covered }
   }
-  return { ch: '█', below: y - top }
+  return { ch: '█', below: y - top, covered: 1 }
 }
 
 const lava: Skin = {
@@ -232,19 +235,23 @@ const calm: Skin = {
     dark: ['#7fb0aa', '#5f8f8c', '#436b6d', '#2b4a4d'],
   },
   shades: 12,
-  cell: ({ x, y, t, rows, level, palette, dither }) => {
-    const breath = 0.3 * Math.sin(t * 0.03)
+  cell: ({ x, y, s, rows, level, palette, dither }) => {
+    // Phases run on wall-clock seconds, so the pace is the same at any fps:
+    // a breath takes about 17 s, the front swell drifts over about 26 s.
+    const breath = 0.3 * Math.sin(s * 0.36)
     const base = rows - depth(level, rows) - breath
-    const front = water(base + 0.6 * Math.sin(x * 0.15 + t * 0.02) + 0.3 * Math.sin(x * 0.07 - t * 0.013), y)
-    const back = water(base - 0.3 + 0.3 * Math.sin(x * 0.09 - t * 0.012 + 1.3), y)
+    const front = water(base + 0.6 * Math.sin(x * 0.15 + s * 0.24) + 0.3 * Math.sin(x * 0.07 - s * 0.156), y)
+    const back = water(base - 0.3 + 0.3 * Math.sin(x * 0.09 - s * 0.144 + 1.3), y)
 
     // The back swell shows wherever the front one does not fully cover.
     const showBack = back !== null && (front === null || (front.below === 0 && back.below > 0))
     if (showBack) {
-      return { ch: back.ch, color: shade(palette, 0.38, x, y, dither) }
+      return { ch: back.ch, color: shade(palette, 0.38 + 0.3 * (1 - back.covered), x, y, dither) }
     }
     if (!front) return null
-    const v = front.below === 0 ? 0 : 0.12 + 0.78 * clamp(front.below / rows, 0, 1)
+    // A thin sliver of surface is drawn in a mid tone and brightens as it
+    // fills the cell, so a cell never jumps from empty to the brightest shade.
+    const v = front.below === 0 ? 0.55 * (1 - front.covered) : 0.12 + 0.78 * clamp(front.below / rows, 0, 1)
     return { ch: front.ch, color: shade(palette, v, x, y, dither) }
   },
 }
@@ -263,6 +270,7 @@ export const draw = (
   rows: number,
   level: number,
   dither = true,
+  seconds = t / 12,
 ): Run[][] => {
   const stops = skin.palettes[appearance]
   const palette = skin.shades ? ramp(stops, skin.shades) : stops
@@ -270,7 +278,7 @@ export const draw = (
   for (let y = 0; y < rows; y++) {
     const runs: Run[] = []
     for (let x = 0; x < width; x++) {
-      const cell = skin.cell({ x, y, t, width, rows, level, palette, dither })
+      const cell = skin.cell({ x, y, t, s: seconds, width, rows, level, palette, dither })
       const prev = runs[runs.length - 1]
       if (!cell) {
         if (prev) prev.text += ' '

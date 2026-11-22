@@ -22,7 +22,7 @@ const fit = (text: string, width: number): string =>
   text.length <= width ? text : text.slice(0, Math.max(0, width - 1)) + '~'
 
 const clock = (seconds: number): string =>
-  seconds >= 60 ? `${Math.floor(seconds / 60)}m ${seconds % 60}s` : `${seconds}s`
+  seconds >= 60 ? `${Math.floor(seconds / 60)}m ${String(seconds % 60).padStart(2, '0')}s` : `${seconds}s`
 
 const num = (value: unknown, fallback: number, lo: number, hi: number): number => {
   const n = Number(value)
@@ -125,7 +125,7 @@ export const register: Register = (on, options) => {
 
     const t = isStill ? 0 : v.frame
     const level = v.percent < 0 ? 0 : v.percent / 100
-    const rows = draw(skin, appearance, t, lavaWidth, ROWS, level, hasDither)
+    const rows = draw(skin, appearance, t, lavaWidth, ROWS, level, hasDither, (t * tickMs) / 1000)
 
     const seconds = v.startedAt ? Math.max(0, Math.floor((v.now - v.startedAt) / 1000)) : 0
     const top = Object.entries(counts)
@@ -134,8 +134,8 @@ export const register: Register = (on, options) => {
       .map(([name, c]) => `${name}x${c}`)
       .join(' ')
     const info = [
-      `${e.props.mode} | ${clock(seconds)}`,
-      `ctx ${v.percent < 0 ? '?' : v.percent + '%'} | ${v.usd < 0 ? '$?' : '$' + v.usd.toFixed(2)}`,
+      `${String(e.props.mode).padEnd(10)} | ${clock(seconds).padStart(6)}`,
+      `ctx ${(v.percent < 0 ? '?' : v.percent + '%').padStart(4)} | ${(v.usd < 0 ? '$?' : '~$' + v.usd.toFixed(2)).padStart(8)}`,
       `tools ${tools}${top ? ' | ' + top : ''}`,
       last ? `> ${last}` : '',
     ]

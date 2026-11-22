@@ -50,7 +50,7 @@ claude plugin details spinner-skins     # component inventory
 | `showInfo` | boolean | `true` | Dashboard on or off. It also hides itself when it would be under 14 columns |
 | `reducedMotion` | boolean | `false` | One still frame; the dashboard still updates once a second |
 
-Skins: `lava` Minecraft lava, `ocean` waves, `matrix` glyph rain, `aurora` colour curtains, `nostromo` amber motion tracker (Alien, 1979), `calm` slow muted water for sensitive attention (pair with `reducedMotion=true` or `fps=6` for even less movement).
+Skins: `lava` Minecraft lava, `ocean` waves, `matrix` glyph rain, `aurora` colour curtains, `nostromo` amber motion tracker (Alien, 1979), `calm` slow, low-stimulation water (set `reducedMotion=true` for a still frame, `dither=false` for flatter colour).
 
 ## What the user sees
 
@@ -121,6 +121,10 @@ claude plugin test .          # 2 tests, both must pass
 ```
 
 Neither checks how it looks. To see it: `claude --plugin-dir <this folder>`, then send a prompt.
+
+## Design evidence
+
+`docs/calm-skin-research.md` collects what is known about motion, attention and low-load status display, with references and an honest strength tag per claim. Short version: low-stimulation is defensible, "calming" is not proven, and autism and ADHD are heterogeneous, so every default has an off switch. `calm` makes no therapeutic claim.
 
 ## Known limits
 
