@@ -25,6 +25,12 @@
       "description": "How much of the terminal width the animation row spans, 10 to 100.",
       "default": 100
     },
+    "infoPercent": {
+      "type": "number",
+      "title": "Dashboard share (%)",
+      "description": "How much of the row the info column takes, 20 to 80. The animation gets the rest.",
+      "default": 60
+    },
     "fps": {
       "type": "number",
       "title": "Frames per second",

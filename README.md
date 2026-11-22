@@ -48,6 +48,7 @@ Each option is a row in the plugin config menu. A change reloads the mod.
 | `skin` | `lava` | `lava`, `ocean`, `matrix`, `aurora` or `nostromo` |
 | `appearance` | `light` | `light` or `dark`: picks the palette for your terminal background |
 | `widthPercent` | `100` | How much of the terminal width the row (animation + info) spans, 10 to 100 |
+| `infoPercent` | `60` | Share of the row the info column takes, 20 to 80; the animation gets the rest |
 | `fps` | `12` | Frames per second, 1 to 30. Lower it over slow SSH |
 | `showInfo` | `true` | Info column to the right of the animation |
 | `reducedMotion` | `false` | Draw a still frame; only the info column updates, once a second |

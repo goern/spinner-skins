@@ -7,7 +7,6 @@ import { SKINS, draw } from './skins'
 const ROWS = 4
 const GAP = 2
 const MIN_LAVA = 16
-const MAX_INFO = 40
 const MARGIN = 2
 const MIN_INFO = 14
 
@@ -32,6 +31,7 @@ export const register: Register = (on, options) => {
   const skin = SKINS[String(opts.skin ?? 'lava')] ?? SKINS.lava
   const appearance = opts.appearance === 'dark' ? 'dark' : 'light'
   const widthPercent = num(opts.widthPercent, 100, 10, 100)
+  const infoPercent = num(opts.infoPercent, 60, 20, 80)
   const isStill = opts.reducedMotion === true
   const showInfo = opts.showInfo !== false
   const tickMs = isStill ? 1000 : Math.round(1000 / num(opts.fps, 12, 1, 30))
@@ -113,7 +113,7 @@ export const register: Register = (on, options) => {
 
     // The whole row (pool + info) spans widthPercent of the terminal.
     const total = Math.max(MIN_LAVA, Math.floor(((columns - MARGIN) * widthPercent) / 100))
-    const infoWidth = Math.min(MAX_INFO, Math.floor(total * 0.4))
+    const infoWidth = Math.floor((total * infoPercent) / 100) - GAP
     const hasInfo = showInfo && infoWidth >= MIN_INFO
     const lavaWidth = hasInfo ? total - infoWidth - GAP : total
 
