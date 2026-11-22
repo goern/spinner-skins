@@ -36,6 +36,7 @@ export const register: Register = (on, options) => {
   const widthPercent = num(opts.widthPercent, 100, 10, 100)
   const infoPercent = num(opts.infoPercent, 60, 20, 80)
   const isStill = opts.reducedMotion === true
+  const hasDither = opts.dither !== false
   const showInfo = opts.showInfo !== false
   const tickMs = isStill ? 1000 : Math.round(1000 / num(opts.fps, 12, 1, 30))
   const pollEvery = Math.max(1, Math.round(1000 / tickMs))
@@ -124,7 +125,7 @@ export const register: Register = (on, options) => {
 
     const t = isStill ? 0 : v.frame
     const level = v.percent < 0 ? 0 : v.percent / 100
-    const rows = draw(skin, appearance, t, lavaWidth, ROWS, level)
+    const rows = draw(skin, appearance, t, lavaWidth, ROWS, level, hasDither)
 
     const seconds = v.startedAt ? Math.max(0, Math.floor((v.now - v.startedAt) / 1000)) : 0
     const top = Object.entries(counts)

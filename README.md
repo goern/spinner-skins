@@ -46,6 +46,7 @@ claude plugin details spinner-skins     # component inventory
 | `widthPercent` | number 10-100 | `100` | Share of terminal width the whole row spans (animation + dashboard) |
 | `infoPercent` | number 20-80 | `60` | Share of that row the dashboard takes; the animation gets the rest |
 | `fps` | number 1-30 | `12` | Frames per second. Lower it over slow SSH |
+| `dither` | boolean | `true` | Ordered dithering between neighbouring shades for smoother gradients (lava, ocean, calm); off gives flat colour |
 | `showInfo` | boolean | `true` | Dashboard on or off. It also hides itself when it would be under 14 columns |
 | `reducedMotion` | boolean | `false` | One still frame; the dashboard still updates once a second |
 

@@ -38,6 +38,12 @@
       "description": "1 to 30. Lower it over slow SSH links.",
       "default": 12
     },
+    "dither": {
+      "type": "boolean",
+      "title": "Dithering",
+      "description": "Blend neighbouring shades with an ordered dither for smoother gradients (lava, ocean, calm). Turn off for flat, quieter colour.",
+      "default": true
+    },
     "showInfo": {
       "type": "boolean",
       "title": "Show info column",
