@@ -2,6 +2,10 @@
 
 Claude Code mod. Replaces the spinner words ("Frolicking...") with an animated skin plus a dashboard. Written for agents to install, configure and extend; humans can read it too.
 
+![One frame of each skin, with the dashboard](assets/screenshot.png)
+
+*Rendered from the skins' own drawing code (`scripts/`), not captured from a live terminal. In a real terminal `░▒▓` are shaded blocks.*
+
 ## Install and configure (one command)
 
 ```bash
@@ -101,6 +105,13 @@ const mine: Skin = {
 
 `cell` rules: `x` is 0 to `width-1`, `y` is 0 to `rows-1` (rows is 4), `t` is the frame counter, `level` is context fill 0 to 1. Return `null` for an empty cell. Keep it pure and cheap: it runs `width * rows` times per frame.
 
+## Regenerate the icon and screenshot
+
+```bash
+bun scripts/dump-frames.ts > frames.json
+python3 scripts/render_assets.py frames.json assets/   # needs Pillow; set FONT=<mono .ttf> if the default is missing
+```
+
 ## Check your work
 
 ```bash
@@ -116,7 +127,6 @@ Neither checks how it looks. To see it: `claude --plugin-dir <this folder>`, the
 - No theme detection; `appearance` is manual.
 - The timer runs for the whole turn, because the mod cannot tell whether the spinner is on screen.
 - `claude plugin test` exercises hooks, not terminal paint.
-- No icon or screenshot yet; the plugin directory would want a square PNG.
 
 ## License
 
