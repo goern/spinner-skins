@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 spinner-skins contributors
+
 import { expect, test } from 'claude-code/testing'
 
 const SPINNER = {

@@ -2,7 +2,7 @@
   "name": "spinner-skins",
   "version": "0.3.0",
   "description": "Replaces Claude Code's spinner words with a live animated skin (lava, ocean, matrix, aurora, nostromo, calm) that shows context fill, cost, elapsed time and tool activity.",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "types": "./types/index.d.ts",
   "userConfig": {
     "skin": {

@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 spinner-skins contributors
+
 import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 

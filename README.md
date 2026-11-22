@@ -120,4 +120,4 @@ Neither checks how it looks. To see it: `claude --plugin-dir <this folder>`, the
 
 ## License
 
-MIT
+GPL-3.0-or-later. The full text is in `LICENSE`; every source file carries an `SPDX-License-Identifier: GPL-3.0-or-later` header. Contributions are accepted under the same terms.

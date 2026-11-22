@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 spinner-skins contributors
+
 // Pure drawing code: no `$`, no state. A skin turns (x, y, time, fill level)
 // into one coloured cell; register.tsx merges the cells into rows.
 

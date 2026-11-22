@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 spinner-skins contributors
+
 export type View = {
   // Animation frame, bumped by the timer.
   frame: number
