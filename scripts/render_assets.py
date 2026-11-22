@@ -19,6 +19,7 @@ BG = (22, 24, 33)
 FG = (200, 205, 220)
 DIM = (120, 126, 150)
 CW, CH = 14, 28  # cell size in px
+EIGHTHS = {chr(0x2581 + i): (i + 1) / 8 for i in range(7)}
 BLOCKS = {"█": 1.0, "▓": 0.75, "▒": 0.5, "░": 0.25}
 
 
@@ -40,6 +41,9 @@ def draw_run_rows(d, font, rows, x0, y0):
                 px, py = x0 + x * CW, y0 + y * CH
                 if ch in BLOCKS:
                     d.rectangle([px, py, px + CW - 1, py + CH - 1], fill=mix(color, BG, BLOCKS[ch]))
+                elif ch in EIGHTHS:
+                    top = py + CH - round(CH * EIGHTHS[ch])
+                    d.rectangle([px, top, px + CW - 1, py + CH - 1], fill=color)
                 elif ch != " ":
                     d.text((px, py + 2), ch, font=font, fill=color)
                 x += 1

@@ -38,6 +38,23 @@ const hash = (a: number, b: number): number => {
 const depth = (level: number, rows: number): number =>
   0.6 + clamp(level, 0, 1) * (rows - 0.6)
 
+const EIGHTHS = ['\u2581', '\u2582', '\u2583', '\u2584', '\u2585', '\u2586', '\u2587', '\u2588']
+
+// One cell of a body of water whose surface sits `top` rows below the grid's
+// top edge. The surface cell is filled to its exact height with an eighth
+// block, so the surface slides smoothly between rows instead of jumping a
+// whole row at a time. Cells below it step darker in flat horizontal bands
+// (by depth below `base`, the surface at rest), so no seams follow the swell.
+const water = (top: number, base: number, y: number, palette: string[]): Cell | null => {
+  const covered = y + 1 - top
+  if (covered <= 0.06) return null
+  if (covered < 1) {
+    return { ch: EIGHTHS[clamp(Math.round(covered * 8), 1, 8) - 1], color: palette[0] }
+  }
+  const d = clamp(Math.floor(y - base) + 1, 1, palette.length - 1)
+  return { ch: '\u2588', color: palette[d] }
+}
+
 const lava: Skin = {
   verb: 'Smelted',
   palettes: {
@@ -60,17 +77,12 @@ const lava: Skin = {
 const ocean: Skin = {
   verb: 'Sailed',
   palettes: {
-    light: ['#0b6fa4', '#0a5a8a', '#084a73', '#06395a'],
-    dark: ['#7fd0f5', '#4fb3e8', '#2b8fcc', '#1b6ba3'],
+    light: ['#3d9ad1', '#0b6fa4', '#0a5a8a', '#084a73'],
+    dark: ['#9fdcfa', '#4fb3e8', '#2b8fcc', '#1b6ba3'],
   },
   cell: ({ x, y, t, rows, level, palette }) => {
-    const top = rows - depth(level, rows) + 0.7 * Math.sin(x * 0.5 + t * 0.15)
-    if (y + 0.5 < top) return null
-    const d = Math.floor(y + 0.5 - top)
-    return {
-      ch: d <= 0 ? '~' : d === 1 ? '▒' : d === 2 ? '▓' : '█',
-      color: palette[clamp(d, 0, palette.length - 1)],
-    }
+    const base = rows - depth(level, rows)
+    return water(base + 0.7 * Math.sin(x * 0.5 + t * 0.15), base, y, palette)
   },
 }
 
@@ -147,16 +159,14 @@ const nostromo: Skin = {
 const calm: Skin = {
   verb: 'Settled',
   palettes: {
-    light: ['#cfe3dc', '#a8cfc4', '#86b8b0', '#6aa0a3'],
-    dark: ['#3a5a5a', '#4f7a7a', '#6a9a98', '#8dbbb4'],
+    light: ['#b9d8cf', '#a8cfc4', '#86b8b0', '#6aa0a3'],
+    dark: ['#5f8f8c', '#4f7a7a', '#3f6666', '#335555'],
   },
   cell: ({ x, y, t, rows, level, palette }) => {
     const breath = 0.3 * Math.sin(t * 0.03)
     const swell = 0.6 * Math.sin(x * 0.15 + t * 0.02) + 0.3 * Math.sin(x * 0.07 - t * 0.013)
-    const top = rows - depth(level, rows) - breath + swell
-    if (y + 0.5 < top) return null
-    const d = clamp(Math.floor(y + 0.5 - top), 0, palette.length - 1)
-    return { ch: d === 0 ? '\u2591' : '\u2592', color: palette[d] }
+    const base = rows - depth(level, rows) - breath
+    return water(base + swell, base, y, palette)
   },
 }
 
