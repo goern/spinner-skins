@@ -1,0 +1,47 @@
+{
+  "name": "spinner-skins",
+  "version": "0.3.0",
+  "description": "Replaces Claude Code's spinner words with a live animated skin (lava, ocean, matrix, aurora, nostromo) that shows context fill, cost, elapsed time and tool activity.",
+  "license": "MIT",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "skin": {
+      "type": "string",
+      "title": "Skin",
+      "description": "Which animation to draw.",
+      "options": ["lava", "ocean", "matrix", "aurora", "nostromo"],
+      "default": "lava"
+    },
+    "appearance": {
+      "type": "string",
+      "title": "Terminal background",
+      "description": "Picks a palette that reads on your theme.",
+      "options": ["light", "dark"],
+      "default": "light"
+    },
+    "widthPercent": {
+      "type": "number",
+      "title": "Width (% of terminal)",
+      "description": "How much of the terminal width the animation row spans, 10 to 100.",
+      "default": 100
+    },
+    "fps": {
+      "type": "number",
+      "title": "Frames per second",
+      "description": "1 to 30. Lower it over slow SSH links.",
+      "default": 12
+    },
+    "showInfo": {
+      "type": "boolean",
+      "title": "Show info column",
+      "description": "Mode, elapsed time, context fill, cost and tool activity to the right of the animation.",
+      "default": true
+    },
+    "reducedMotion": {
+      "type": "boolean",
+      "title": "Reduced motion",
+      "description": "Draw a still frame; only the info column updates (once a second).",
+      "default": false
+    }
+  }
+}

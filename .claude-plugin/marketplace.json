@@ -1,0 +1,5 @@
+{
+  "name": "spinner-skins",
+  "owner": { "name": "goern" },
+  "plugins": [{ "name": "spinner-skins", "source": "./" }]
+}
