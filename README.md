@@ -20,7 +20,7 @@ claude plugin install spinner-skins \
 - Add `-s project` or `-s local` to change the scope (default `user`).
 - `-y` is only needed for marketplace-declared commands, which this mod has none of.
 - Other running sessions pick the mod up with `/reload-plugins`.
-- Only the Forgejo URL above works. The GitHub mirror is not set up yet.
+- Same repository on GitHub (push mirror, updated on every commit): swap the marketplace for `goern/spinner-skins`.
 
 Change options later, without reinstalling:
 
