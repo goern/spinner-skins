@@ -116,6 +116,8 @@ export const register: Register = (on, options) => {
     const infoWidth = Math.floor((total * infoPercent) / 100) - GAP
     const hasInfo = showInfo && infoWidth >= MIN_INFO
     const lavaWidth = hasInfo ? total - infoWidth - GAP : total
+    // The tool line may run on to the screen edge; the other lines stay in the column.
+    const edgeWidth = columns - MARGIN - lavaWidth - GAP
 
     const t = isStill ? 0 : v.frame
     const level = v.percent < 0 ? 0 : v.percent / 100
@@ -151,7 +153,7 @@ export const register: Register = (on, options) => {
           <Box flexDirection="column">
             {info.map((line, i) => (
               <Text key={`i${i}`} dimColor>
-                {' '.repeat(GAP) + fit(line, infoWidth)}
+                {' '.repeat(GAP) + fit(line, i === 3 ? edgeWidth : infoWidth)}
               </Text>
             ))}
           </Box>
