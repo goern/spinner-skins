@@ -137,7 +137,27 @@ const nostromo: Skin = {
   },
 }
 
-export const SKINS: Record<string, Skin> = { lava, ocean, matrix, aurora, nostromo }
+// Calm: made to be easy on busy or sensitive attention. Everything is slow
+// (a drift takes about 25 seconds, a breath about 17), low contrast, one hue
+// family, no flicker, no sudden change and no alarm colours: a full context
+// window only makes the water a little deeper.
+const calm: Skin = {
+  verb: 'Settled',
+  palettes: {
+    light: ['#cfe3dc', '#a8cfc4', '#86b8b0', '#6aa0a3'],
+    dark: ['#3a5a5a', '#4f7a7a', '#6a9a98', '#8dbbb4'],
+  },
+  cell: ({ x, y, t, rows, level, palette }) => {
+    const breath = 0.3 * Math.sin(t * 0.03)
+    const swell = 0.6 * Math.sin(x * 0.15 + t * 0.02) + 0.3 * Math.sin(x * 0.07 - t * 0.013)
+    const top = rows - depth(level, rows) - breath + swell
+    if (y + 0.5 < top) return null
+    const d = clamp(Math.floor(y + 0.5 - top), 0, palette.length - 1)
+    return { ch: d === 0 ? '\u2591' : '\u2592', color: palette[d] }
+  },
+}
+
+export const SKINS: Record<string, Skin> = { lava, ocean, matrix, aurora, nostromo, calm }
 
 export type Run = { text: string; color: string }
 

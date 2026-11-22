@@ -37,7 +37,7 @@ claude plugin details spinner-skins     # component inventory
 
 | Key | Type | Default | Meaning |
 | --- | --- | --- | --- |
-| `skin` | `lava` `ocean` `matrix` `aurora` `nostromo` | `lava` | Animation to draw |
+| `skin` | `lava` `ocean` `matrix` `aurora` `nostromo` `calm` | `lava` | Animation to draw |
 | `appearance` | `light` `dark` | `light` | Palette set. The mod API has no theme detection, so the user picks. Use `dark` on dark terminals |
 | `widthPercent` | number 10-100 | `100` | Share of terminal width the whole row spans (animation + dashboard) |
 | `infoPercent` | number 20-80 | `60` | Share of that row the dashboard takes; the animation gets the rest |
@@ -45,7 +45,7 @@ claude plugin details spinner-skins     # component inventory
 | `showInfo` | boolean | `true` | Dashboard on or off. It also hides itself when it would be under 14 columns |
 | `reducedMotion` | boolean | `false` | One still frame; the dashboard still updates once a second |
 
-Skins: `lava` Minecraft lava, `ocean` waves, `matrix` glyph rain, `aurora` colour curtains, `nostromo` amber motion tracker (Alien, 1979).
+Skins: `lava` Minecraft lava, `ocean` waves, `matrix` glyph rain, `aurora` colour curtains, `nostromo` amber motion tracker (Alien, 1979), `calm` slow muted water for sensitive attention (pair with `reducedMotion=true` or `fps=6` for even less movement).
 
 ## What the user sees
 
@@ -58,7 +58,7 @@ Skins: `lava` Minecraft lava, `ocean` waves, `matrix` glyph rain, `aurora` colou
 
 - **Animation** (left): the pool is deeper, denser or has more contacts as the context window fills. Calm at rest, full near auto-compact.
 - **Dashboard** (right): turn mode and elapsed time; context percent and session cost (`$.session.usage()`, polled about once a second; cost is an estimate); tool call count with the top three tools; the last tool call, which may run to the screen edge before it is cut.
-- **End-of-turn line**: the verb follows the skin (`Smelted`, `Sailed`, `Decoded`, `Glowed`, `Tracked` for 3s).
+- **End-of-turn line**: the verb follows the skin (`Smelted`, `Sailed`, `Decoded`, `Glowed`, `Tracked`, `Settled` for 3s).
 
 ## How it works
 
